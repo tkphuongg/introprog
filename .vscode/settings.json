@@ -1,0 +1,16 @@
+{
+    "files.associations": {
+        "03_canvas.h": "c",
+        "04ex_helpers.h": "c",
+        "05_canvas.h": "c",
+        "07ex_header.h": "c",
+        "math.h": "c",
+        "cmath": "c",
+        "complex": "c",
+        "cstdlib": "c",
+        "turtlecanvas.h": "c",
+        "stdbool.h": "c",
+        "array_visualizer.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+}
