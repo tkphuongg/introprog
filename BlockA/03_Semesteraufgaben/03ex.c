@@ -35,6 +35,9 @@ Implementieren Sie eine Funktion, die das Element am gegebenen Index in der Sequ
 Wenn der Index ungültig ist, geben Sie den Wert 0 zurück.
 */
 uint16_t seq_get(Sequence seq, size_t index) {
+    if (index > seq.len - 1 || seq.len == 0){
+        return 0;
+    }
     return seq.data[index];
 }
 
@@ -48,6 +51,37 @@ Aktualisieren Sie die `len` und `capacity` Felder.
 
 Achtung: unser Testcode wird bei Bedarf `free` für von Ihnen allokierte Arrays aufrufen. Falls Ihr Code fehlerhaft ist, kann das zu Abstürzen führen.
 */
+void copy_array(uint16_t *arr_to_copy, uint16_t *new_arr, size_t len){
+    for(int i = 0; i < len; i++){
+        new_arr[i] = arr_to_copy[i];
+    }
+}
 void seq_push(Sequence *seq, uint16_t element) {
-    
+    // If sequence already has maximum elements
+    if(seq->capacity == seq->len){
+        // Allocate array that's twice as large as old array
+        uint16_t *bigger_arr = malloc(2 * seq->capacity * sizeof(uint16_t));
+
+        // Save old array in temporary variable
+        uint16_t *small_arr = seq->data;
+
+        // Copy old array into bigger array
+        copy_array(seq->data, bigger_arr, seq->capacity);
+
+        // Change sequence to have new array and capacity
+        seq->data = bigger_arr;
+        seq->capacity *= 2;
+
+        // Free old array
+        free(small_arr);
+
+        //Add new element and change len accordingly
+        seq->data[seq->len] = element;
+        seq->len++;
+    }
+    else{
+        //Add new element and change len accordingly
+        seq->data[seq->len] = element;
+        seq->len++;
+    }
 }
