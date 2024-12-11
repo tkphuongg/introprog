@@ -42,41 +42,44 @@ Geben Sie die größte Zahl im Suchbaum `t` zurück, welche echt kleiner als `x`
 Falls keine solche Zahl existiert, geben Sie stattdessen `x` zurück. Die Laufzeit Ihrer Lösung soll
 proportional zur Höhe des Baumes sein, aber unabhängig von der Gesamtzahl an Knoten. 
 */
-int check_tree(TreeNode *tree_to_check, uint16_t x, uint16_t *max_lt_x){
+void check_tree(TreeNode *tree_to_check, uint16_t x, int *max_lt_x_ptr){
+    // Check if tree/branch exists
     if(tree_to_check == NULL){
-        return 0;
+        return;
     }
+    // The following block moves the ptr around the tree
     else if(tree_to_check->item >= x){
+        // Ptr goes left if item is \leq x
         if(tree_to_check->left){
             tree_to_check = tree_to_check->left;
-            return 1;
+            return check_tree(tree_to_check, x, max_lt_x_ptr);
         }
-        return 0;
     }
     else{
+        // Ptr goes right if item is < x and item is saved to max
+        *max_lt_x_ptr = tree_to_check->item;
         if(tree_to_check->right){
             tree_to_check = tree_to_check->right;
-            return 1;
+            check_tree(tree_to_check, x, max_lt_x_ptr);
         }
-        return 0;
-    }
-}
-
-void save_item_if_lt_x(TreeNode *current_node, uint16_t x, uint16_t* max_lt_x){
-    if(current_node->item < x && current_node != NULL){
-        *max_lt_x = current_node->item;
     }
 }
 
 uint16_t search_tree_get_less_than(TreeNode *t, uint16_t x) {
-    uint16_t *max_lt_x = NULL;
-    *max_lt_x = x;
+    // Check if t exists
     if(t == NULL){
         return x;
     }
-    TreeNode *current_node = t;
-    while(check_tree(current_node, x, max_lt_x)){
-        save_item_if_lt_x(current_node, x, max_lt_x);
-    }
-    return *max_lt_x;
+
+    // Creates ptr for return value to be called in recursive func and set default return value to x
+    int *max_lt_x_ptr = malloc(sizeof(int));
+    *max_lt_x_ptr = x;
+    
+    check_tree(t, x, max_lt_x_ptr);
+    
+    // Get value from ptr and free ptr
+    int return_val = *max_lt_x_ptr;
+    free(max_lt_x_ptr);
+
+    return return_val;
 }
