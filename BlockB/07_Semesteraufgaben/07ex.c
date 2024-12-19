@@ -38,29 +38,21 @@ void merge(uint8_t *arr, int start_first_arr, int end_first_arr, int end_second_
     int i = 0;
     while (index_first_arr <= end_first_arr && index_second_arr <= end_second_arr){
         if(arr[index_first_arr] <= arr[index_second_arr]){
-            new_arr[index_new_arr] = arr[index_first_arr];
-            index_first_arr++;
+            new_arr[index_new_arr++] = arr[index_first_arr++];
         }
         else{
-            new_arr[index_new_arr] = arr[index_second_arr];
-            index_second_arr++;
+            new_arr[index_new_arr++] = arr[index_second_arr++];
         }
-        index_new_arr++;
     }
-    while (index_first_arr <= end_second_arr){
-        new_arr[index_new_arr] = arr[index_second_arr];
-        index_second_arr++;
-        index_new_arr++;
+    while (index_first_arr <= end_first_arr){
+        new_arr[index_new_arr++] = arr[index_first_arr++];
     }
-    while (index_second_arr <= end_first_arr){
-        new_arr[index_new_arr] = arr[index_first_arr];
-        index_first_arr++;
-        index_new_arr++;
+    while (index_second_arr <= end_second_arr){
+        new_arr[index_new_arr++] = arr[index_second_arr++];
     }
-    for(int j = start_first_arr; j <= end_second_arr; j++)
+    while(start_first_arr <= end_second_arr)
     {
-        arr[j] = new_arr[i];
-        i++;
+        arr[start_first_arr++] = new_arr[i++];
     }
 }
 
