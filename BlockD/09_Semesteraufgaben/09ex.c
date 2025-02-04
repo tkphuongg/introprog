@@ -64,27 +64,37 @@ Aufgabe 2:
 
 Gegeben ein Array `arr`, geben Sie den zugehörigen linksvollständigen Binärbaum zurück.
 */
-TreeNode *make_node_and_child(Array arr, int arr_len, int i, TreeNode *t){
+void make_node_and_child(Array arr, int arr_len, int i, TreeNode *t){
     if(i >= arr_len){
-        return NULL;
+        return;
     }
     else{
         t->item = arr.arr[i];
 
-        t->left = make_node_and_child(arr, arr_len, (2*i + 1), t->left);
-
-        t->right = make_node_and_child(arr, arr_len, (2*i + 2), t->right);
-
-        return t;
+        if(2*i + 1 >= arr_len){
+            t->left =  NULL;
+        }
+        else{
+            t->left = malloc(sizeof(TreeNode));
+            make_node_and_child(arr, arr_len, (2*i + 1), t->left);
+        }
+        if(2*i + 2 >= arr_len){
+            t->right =  NULL;
+        }
+        else{
+            t->right = malloc(sizeof(TreeNode));
+            make_node_and_child(arr, arr_len, (2*i + 2), t->right);
+        }
     }
-
 }
 
 TreeNode *array_to_tree(Array arr) {
-    TreeNode *t = NULL;
+    TreeNode *t = malloc(sizeof(TreeNode));
     int arr_len = arr.len;
-    if(arr_len > 0){
-        t = make_node_and_child(arr, arr_len, 0, t);
+    if(arr_len <= 0){
+        free(t);
+        return NULL;
     }
+    make_node_and_child(arr, arr_len, 0, t);
     return t;
 }
