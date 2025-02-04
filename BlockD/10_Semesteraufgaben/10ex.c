@@ -65,7 +65,7 @@ Tipp 3: Diese Funktion selbst lässt sich nicht sinnvoll rekursiv aufrufen. Schr
 int partition(uint8_t *arr, int left, int right){
     int pivot_position = left;
     int i = right;
-    while(pivot_position < right - 1 && i >= left){
+    while(pivot_position < right && i > pivot_position){
         if(arr[pivot_position] > arr[i]){
             uint8_t temp = arr[i];
             arr[i] = arr[pivot_position + 1];
@@ -81,12 +81,12 @@ int partition(uint8_t *arr, int left, int right){
 }
 
 void visualize_sort(Visualizer *v, uint8_t *arr, int left, int right, int pivot){
-    if (left == right){
+    if (left >= right){
         return;
     }
     else{
         pivot = partition(arr, left, right);
-        // visualizer_append_array(v, arr);
+        visualizer_append_array(v, arr);
         visualize_sort(v, arr, left, pivot - 1, 0);
         visualize_sort(v, arr, pivot + 1, right, 0);
     }
@@ -94,10 +94,6 @@ void visualize_sort(Visualizer *v, uint8_t *arr, int left, int right, int pivot)
 
 void sort_quickly(Visualizer *v, uint8_t *arr, size_t len) {
     visualizer_append_array(v, arr);
-    // int left = 0;
-    // int right = len - 1;
-    // int first_pivot = partition(arr, left, right);
     visualize_sort(v, arr, 0, len - 1, 0);
-    visualizer_append_array(v, arr);
     return;
 }
