@@ -51,6 +51,7 @@ HeightTreeNode *rotate_left(HeightTreeNode *t) {
     HeightTreeNode *new_root = t->right;
     if(t->right->left != NULL){
         t->right = new_root->left;  
+        t->right->parent = t;
     }
     else{
         t->right = NULL;
@@ -69,14 +70,12 @@ HeightTreeNode *rotate_left(HeightTreeNode *t) {
         new_root->parent = NULL;
     }
     t->parent = new_root;
-    t->right->parent = t;
 
-    new_root->height = max(height_or_zero(new_root->left), height_or_zero(new_root->right)) + 1;
     t->height = max(height_or_zero(t->left), height_or_zero(t->right)) + 1;
+    new_root->height = max(height_or_zero(new_root->left), height_or_zero(new_root->right)) + 1;
     
-    return t;
+    return new_root;
 }
-
 /*
 Die vier möglichen Sequenzen von Rotationen, um einen Beinahe-AVL-Baum in einen AVL-Baum zu überführen.
 */
@@ -93,5 +92,17 @@ Aufgabe 2:
 Gegeben ein Beinahe-AVL-Baum mit korrekten Höhenwerten, geben Sie zurück, welche Rotationen ihn zu einem AVL-Baum machen.
 */
 Rotations determine_rotations(HeightTreeNode *t) {
-    return Left;
+    if(height_or_zero(t->left) > height_or_zero(t->right) + 1)
+    {
+        if(height_or_zero(t->left->left) < height_or_zero(t->left->right)){
+            return DoubleRotationLeftRight;
+        }
+        return Right;
+    }
+    else{
+        if(height_or_zero(t->right->left) > height_or_zero(t->right->right)){
+            return DoubleRotationRightLeft;
+        }
+        return Left;
+    }
 }
